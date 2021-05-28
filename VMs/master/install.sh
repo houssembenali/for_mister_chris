@@ -1,36 +1,44 @@
 #!/bin/bash
-export DEBIAN_FRONTEND=noninteractive
-# sur la machine Jenkns
-## On met à jour le systeme pour pouvoir insaller
-    sudo apt update -y
 
-    ## Installer le pré-requis Java 
-    sudo apt -y install openjdk-11-jdk
+sudo apt-get update  
+sudo apt-get -y install open-iscsi
+sudo apt-get -y install lvm2
 
-    ## Installer la version stable de Jenkins et ses prérequis en suivant la documentation officielle : https://www.jenkins.io/doc/book/installing/linux
-    wget -q -O - https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo apt-key add -
-    sudo sh -c 'echo deb https://pkg.jenkins.io/debian-stable binary/ > \
-        /etc/apt/sources.list.d/jenkins.list'
-    sudo apt -y update
-    sudo apt -y install jenkins
+## java for jenkins
+sudo apt -y update
+sudo apt -y install ca-certificates
+sudo apt -y install openjdk-11-jdk
+sudo apt -y install openjdk-11-jdk
+#installer gnup
+sudo apt -y install gnupg
 
-## Démarrer le service Jenkins
+## Jenkins
+sudo wget -q -O - https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo apt-key add -
+sudo sh -c 'echo deb https://pkg.jenkins.io/debian-stable binary/ > \
+    /etc/apt/sources.list.d/jenkins.list'
+	
+sudo apt-get update
+sudo apt-get -y install jenkins
+#
+#start du service kenkins
+sudo service jenkins start
 
-sudo service start jenkins
+################Installation Ansible############
 
-sudo systemctl daemon-reload
-sudo systemctl start jenkins
+sudo apt update
+sudo apt -y install ansible
+ansible --version
 
-## Créer un utilisateur userjob avec son home sur la partition créé
+#########Installation Git#######################
+sudo apt-get -y install git
 
-sudo mkdir -p /home/userjob
+sleep 30
 
-sudo useradd -m userjob -d /home/userjob
 
-## Lui donner les permissions (via le fichier sudoers) d'utiliser apt (et seulement apt pas l'ensemble des droits admin)
+#=============Installation Python ========================
+sudo apt-get -y install python3-pip
+sleep 30
 
-echo 'userjob ALL=(ALL:ALL) /usr/bin/apt' | sudo EDITOR='tee -a' visudo
-
-## Afficher à la fin de l'execution du script le contenu du fichier /var/jenkins_home/secrets/initialAdminPassword pour permettre de récupérer le mot de passe
+#####################Récupération mdp Jenkins#####################"
 
 sudo cat /var/lib/jenkins/secrets/initialAdminPassword

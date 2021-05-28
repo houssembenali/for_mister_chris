@@ -4,6 +4,8 @@
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  # Provision
+  config.vm.provision :shell, :path => "install.sh"
   config.vm.box = "bento/ubuntu-20.10"
   config.vm.provider "virtualbox"
 
