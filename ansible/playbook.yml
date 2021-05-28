@@ -1,0 +1,7 @@
+-
+  name: Docker Install + my-hash-app container
+  hosts: all
+  become: yes
+  roles:
+    - docker
+    - container
